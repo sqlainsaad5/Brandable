@@ -102,6 +102,21 @@ export const ABOUT = {
   ],
 } as const;
 
+export const OWNERS = [
+  {
+    name: "Javed Anwer",
+    role: "CEO",
+    bio: "Driving vision and strategy for BRANDABLE.",
+    image: "/images/team/javed-anwer.png",
+  },
+  {
+    name: "Amjad Javed Saqlain",
+    role: "Co-Founder",
+    bio: "Leading product and growth at BRANDABLE.",
+    image: "/images/team/amjad-javed-saqlain.png",
+  },
+] as const;
+
 export const SERVICES_LIST = [
   {
     title: "Brand strategy",
