@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu } from "lucide-react";
 import { useUIStore } from "@/lib/store/uiStore";
 import { useScrollPosition } from "@/lib/hooks/useScrollPosition";
+import { Logo } from "@/components/shared/Logo";
 import { NavigationPro } from "./NavigationPro";
 import { MobileMenuPro } from "./MobileMenuPro";
 import { cn } from "@/lib/utils/cn";
@@ -40,9 +41,13 @@ export function HeaderPro() {
 
           <Link
             href="/"
-            className="font-display text-xl font-bold tracking-tight text-foreground hover:text-accent transition-colors"
+            className="flex items-center gap-2.5 text-foreground hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-md"
+            aria-label="BRANDABLE - Home"
           >
-            BRANDABLE
+            <Logo variant="header" wrapLink={false} />
+            <span className="font-display text-xl font-bold tracking-tight">
+              BRANDABLE
+            </span>
           </Link>
 
           <NavigationPro />

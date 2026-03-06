@@ -18,6 +18,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://brandable.in"),
   title: { default: "BRANDABLE | Women's Western Wear", template: "BRANDABLE | %s" },
   description: "Premium women's western wear. Discover curated collections for the modern woman.",
+  icons: {
+    icon: [
+      { url: "/images/logo.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/logo.png", sizes: "16x16", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "BRANDABLE | Women's Western Wear",
     description: "Premium women's western wear. Discover curated collections.",

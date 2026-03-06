@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Heart, Minus, Plus, ShoppingBag } from "lucide-react";
 import { formatPrice } from "@/lib/utils/formatPrice";
@@ -40,13 +39,10 @@ export function ProductDetailClient({ product }: { product: Product }) {
         {/* Gallery */}
         <div className="space-y-4">
           <div className="relative aspect-[3/4] overflow-hidden rounded-card bg-surface">
-            <Image
+            <img
               src={images[activeImage]}
               alt={product.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
+              className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
           {images.length > 1 && (
@@ -61,7 +57,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                     activeImage === i ? "border-accent" : "border-transparent"
                   )}
                 >
-                  <Image src={img} alt="" fill className="object-cover" sizes="80px" />
+                  <img src={img} alt="" className="absolute inset-0 w-full h-full object-cover" />
                 </button>
               ))}
             </div>

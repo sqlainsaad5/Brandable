@@ -1,5 +1,6 @@
 export const SITE = {
-  name: "Brandable",
+  name: "BRANDABLE",
+  logo: "/images/logo.png",
   tagline: "Make your brand unforgettable.",
   description:
     "Brandable helps you build a distinctive, memorable brand that stands out. From strategy to identity to guidelines—we bring your vision to life.",

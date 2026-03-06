@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
@@ -60,13 +59,11 @@ function ProductCard3D({ product }: { product: Product }) {
       }}
       className="relative rounded-card overflow-hidden bg-surface border border-white/10 shadow-soft"
     >
-      <Link href={`/products/${product.slug}`} className="block aspect-[3/4] relative">
-        <Image
+      <Link href={`/products/${product.slug}`} className="block aspect-[3/4] relative overflow-hidden">
+        <img
           src={product.image}
           alt={product.name}
-          fill
-          className="object-cover transition-transform duration-500 hover:scale-105"
-          sizes="(max-width: 768px) 50vw, 20vw"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
         {product.badge && (
           <span className="absolute top-3 left-3 rounded bg-accent px-2 py-0.5 text-xs font-semibold text-background">

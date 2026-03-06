@@ -1,7 +1,7 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
 
@@ -12,6 +12,43 @@ const CATEGORIES = [
   { name: "New Arrivals", href: "/products?filter=new", image: "https://placehold.co/800x200/1a1a1a/C6A45C?text=New+Arrivals", span: "col-span-2" },
 ];
 
+function CategoryCard({ cat, i }: { cat: (typeof CATEGORIES)[0]; i: number }) {
+  const [imgError, setImgError] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: i * 0.1 }}
+      className={cn(
+        "relative overflow-hidden rounded-card border border-white/15 bg-surface min-h-[200px]",
+        cat.span || "row-span-1"
+      )}
+    >
+      <Link href={cat.href} className="block h-full min-h-[200px] group">
+        <div className="absolute inset-0 bg-surface relative">
+          {!imgError ? (
+            <img
+              src={cat.image}
+              alt={cat.name}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              onError={() => setImgError(true)}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-accent/20" />
+          )}
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <span className="font-display text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
+            {cat.name}
+          </span>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
 export function CategoryMasonry() {
   return (
     <section id="lookbook" className="py-section-lg" aria-labelledby="categories-heading">
@@ -21,32 +58,7 @@ export function CategoryMasonry() {
         </h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[200px]">
           {CATEGORIES.map((cat, i) => (
-            <motion.div
-              key={cat.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className={cn("relative overflow-hidden rounded-card", cat.span || "row-span-1")}
-            >
-              <Link href={cat.href} className="block h-full group">
-                <div className="absolute inset-0 bg-surface">
-                  <Image
-                    src={cat.image}
-                    alt={cat.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 1024px) 50vw, 25vw"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <span className="font-display text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
-                    {cat.name}
-                  </span>
-                </div>
-              </Link>
-            </motion.div>
+            <CategoryCard key={cat.name} cat={cat} i={i} />
           ))}
         </div>
       </div>

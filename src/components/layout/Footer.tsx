@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NAV_LINKS, SITE } from "@/lib/constants";
+import { Logo } from "@/components/shared/Logo";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -11,14 +12,12 @@ export function Footer() {
     >
       <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-          <div>
-            <Link
-              href="/"
-              className="font-display text-lg font-semibold text-foreground hover:text-accent transition-colors"
-            >
+          <div className="flex flex-col items-start">
+            <Logo variant="footer" />
+            <span className="mt-2 font-display text-lg font-semibold text-foreground">
               {SITE.name}
-            </Link>
-            <p className="mt-2 text-sm text-muted max-w-xs">
+            </span>
+            <p className="mt-1 text-sm text-muted max-w-xs">
               {SITE.tagline}
             </p>
           </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X, Search, ShoppingBag } from "lucide-react";
 import { useCartStore } from "@/lib/store/cartStore";
 import { useUIStore } from "@/lib/store/uiStore";
+import { Logo } from "@/components/shared/Logo";
 import { cn } from "@/lib/utils/cn";
 
 const LINKS = [
@@ -48,7 +49,7 @@ export function MobileMenuPro() {
             className="fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-background border-l border-white/10 shadow-hard md:hidden flex flex-col"
           >
             <div className="flex items-center justify-between p-6 border-b border-white/10">
-              <span className="font-display font-semibold text-foreground">Menu</span>
+              <Logo variant="mobile" />
               <button
                 type="button"
                 onClick={close}

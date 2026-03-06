@@ -1,26 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronDown, Volume2, VolumeX } from "lucide-react";
+import { SITE } from "@/lib/constants";
+import { Logo } from "@/components/shared/Logo";
 
 export function HeroCinematic() {
   const [muted, setMuted] = useState(true);
+  const [videoError, setVideoError] = useState(false);
+  const [showBrandableTitle, setShowBrandableTitle] = useState(true);
+
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval>;
+    const runCycle = () => {
+      setShowBrandableTitle(false);
+      setTimeout(() => setShowBrandableTitle(true), 3000);
+    };
+    const firstId = setTimeout(() => {
+      runCycle();
+      intervalId = setInterval(runCycle, 9000);
+    }, 6000);
+    return () => {
+      clearTimeout(firstId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Video or image background */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted={muted}
-          loop
-          playsInline
-          className="h-full w-full object-cover"
-        >
-          <source src="/videos/hero.mp4" type="video/mp4" />
-        </video>
+        {!videoError && (
+          <video
+            autoPlay
+            muted={muted}
+            loop
+            playsInline
+            className="h-full w-full object-cover"
+            onError={() => setVideoError(true)}
+          >
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background/50" aria-hidden />
       </div>
 
@@ -32,10 +55,18 @@ export function HeroCinematic() {
 
       {/* Content */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-2"
+        >
+          <Logo variant="hero" wrapLink />
+        </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          animate={{ opacity: showBrandableTitle ? 1 : 0, y: 0 }}
+          transition={{ duration: 0.25 }}
           className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-foreground tracking-tight"
         >
           BRANDABLE
@@ -69,15 +100,17 @@ export function HeroCinematic() {
         </motion.div>
       </div>
 
-      {/* Mute toggle */}
-      <button
-        type="button"
-        onClick={() => setMuted((m) => !m)}
-        className="absolute bottom-6 right-6 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-background/50 text-foreground hover:bg-background/80 transition-colors"
-        aria-label={muted ? "Unmute video" : "Mute video"}
-      >
-        {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-      </button>
+      {/* Mute toggle - only when video is available */}
+      {!videoError && (
+        <button
+          type="button"
+          onClick={() => setMuted((m) => !m)}
+          className="absolute bottom-6 right-6 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-background/50 text-foreground hover:bg-background/80 transition-colors"
+          aria-label={muted ? "Unmute video" : "Mute video"}
+        >
+          {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+        </button>
+      )}
 
       {/* Scroll indicator */}
       <motion.div

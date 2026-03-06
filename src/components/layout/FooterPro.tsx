@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Instagram, Facebook, Twitter } from "lucide-react";
+import { Logo } from "@/components/shared/Logo";
 
 const FOOTER_LINKS = {
   Shop: [
@@ -33,11 +34,12 @@ export function FooterPro() {
     <footer className="border-t border-white/10 bg-surface/50" role="contentinfo">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-          <div>
-            <Link href="/" className="font-display text-lg font-bold text-foreground">
+          <div className="flex flex-col items-start">
+            <Logo variant="footer" />
+            <span className="mt-2 font-display text-lg font-bold text-foreground">
               BRANDABLE
-            </Link>
-            <p className="mt-4 text-sm text-muted max-w-xs">
+            </span>
+            <p className="mt-2 text-sm text-muted max-w-xs">
               Premium women&apos;s western wear. Curated for the modern woman.
             </p>
             <div className="mt-6 flex gap-4">

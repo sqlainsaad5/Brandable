@@ -13,7 +13,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-md" role="banner">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Logo />
+        <Logo variant="header" />
         <nav className="hidden md:flex md:items-center md:gap-8" aria-label="Main navigation">
           {NAV_LINKS.map(({ href, label }) => (
             <NavLink key={href} href={href}>
