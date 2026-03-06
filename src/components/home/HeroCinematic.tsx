@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronDown, Volume2, VolumeX } from "lucide-react";
-import { SITE } from "@/lib/constants";
 import { Logo } from "@/components/shared/Logo";
 
 export function HeroCinematic() {
