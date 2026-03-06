@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronDown, Volume2, VolumeX } from "lucide-react";
@@ -9,23 +9,6 @@ import { Logo } from "@/components/shared/Logo";
 export function HeroCinematic() {
   const [muted, setMuted] = useState(true);
   const [videoError, setVideoError] = useState(false);
-  const [showBrandableTitle, setShowBrandableTitle] = useState(true);
-
-  useEffect(() => {
-    let intervalId: ReturnType<typeof setInterval>;
-    const runCycle = () => {
-      setShowBrandableTitle(false);
-      setTimeout(() => setShowBrandableTitle(true), 3000);
-    };
-    const firstId = setTimeout(() => {
-      runCycle();
-      intervalId = setInterval(runCycle, 9000);
-    }, 6000);
-    return () => {
-      clearTimeout(firstId);
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, []);
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -64,8 +47,8 @@ export function HeroCinematic() {
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: showBrandableTitle ? 1 : 0, y: 0 }}
-          transition={{ duration: 0.25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-foreground tracking-tight"
         >
           BRANDABLE
