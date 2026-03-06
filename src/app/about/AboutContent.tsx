@@ -9,7 +9,7 @@ const fadeInUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-40px" },
-  transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+  transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
 };
 
 export function AboutContent() {
@@ -43,7 +43,7 @@ export function AboutContent() {
               transition={{
                 duration: 0.4,
                 delay: i * 0.1,
-                ease: [0.25, 0.46, 0.45, 0.94],
+                ease: [0.25, 0.46, 0.45, 0.94] as const,
               }}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
               className="cursor-default"
@@ -76,7 +76,7 @@ export function AboutContent() {
               transition={{
                 duration: 0.5,
                 delay: i * 0.15,
-                ease: [0.25, 0.46, 0.45, 0.94],
+                ease: [0.25, 0.46, 0.45, 0.94] as const,
               }}
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
               className="group cursor-default"
