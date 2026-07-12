@@ -27,8 +27,12 @@ export function ProductSlider3D({ products }: { products: Product[] }) {
           <p className="text-center text-muted">No products yet.</p>
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4 xl:grid-cols-5">
-            {products.map((product) => (
-              <ProductCardPro key={product.id} product={product} />
+            {products.map((product, i) => (
+              <ProductCardPro
+                key={product.id}
+                product={product}
+                priority={i < 2}
+              />
             ))}
           </div>
         )}

@@ -57,6 +57,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
+                quality={75}
                 className="object-cover"
                 onError={() => setImgFailed(true)}
               />

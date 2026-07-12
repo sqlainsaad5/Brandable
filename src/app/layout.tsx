@@ -16,7 +16,11 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://brandable.in";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://brandable.in");
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -33,6 +37,7 @@ export const metadata: Metadata = {
     "BRANDABLE",
   ],
   authors: [{ name: "BRANDABLE" }],
+  applicationName: "BRANDABLE",
   openGraph: {
     title: "BRANDABLE | Premium Women's Western Wear in Pakistan",
     description:
@@ -51,7 +56,10 @@ export const metadata: Metadata = {
     images: defaultTwitterImages,
   },
   icons: {
-    icon: "/icon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
     apple: "/apple-icon.png",
     shortcut: "/favicon.ico",
   },

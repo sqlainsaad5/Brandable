@@ -1,34 +1,137 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronDown, Volume2, VolumeX } from "lucide-react";
 import { Logo } from "@/components/shared/Logo";
 
+function pickHeroSrc() {
+  if (typeof window === "undefined") return "/videos/hero.mp4";
+  return window.matchMedia("(max-width: 768px)").matches
+    ? "/videos/hero-mobile.mp4"
+    : "/videos/hero.mp4";
+}
+
 export function HeroCinematic() {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [videoError, setVideoError] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+
+  // Defer video until after first paint so poster + text appear instantly
+  useEffect(() => {
+    const connection =
+      typeof navigator !== "undefined"
+        ? (navigator as Navigator & {
+            connection?: { saveData?: boolean; effectiveType?: string };
+          }).connection
+        : undefined;
+
+    // Only skip video when user explicitly requested data savings
+    if (connection?.saveData) return;
+
+    const win = window as Window & {
+      requestIdleCallback?: (
+        cb: () => void,
+        opts?: { timeout: number }
+      ) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    const start = () => setVideoSrc(pickHeroSrc());
+
+    let idleId: number;
+    if (win.requestIdleCallback) {
+      idleId = win.requestIdleCallback(start, { timeout: 800 });
+    } else {
+      idleId = window.setTimeout(start, 250);
+    }
+
+    return () => {
+      if (win.cancelIdleCallback) win.cancelIdleCallback(idleId);
+      else window.clearTimeout(idleId);
+    };
+  }, []);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || !videoSrc) return;
+
+    const tryPlay = () => {
+      el.muted = muted;
+      const play = el.play();
+      if (play) play.catch(() => {});
+    };
+
+    tryPlay();
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        el.pause();
+      } else {
+        tryPlay();
+      }
+    };
+
+    const onEnded = () => {
+      el.currentTime = 0;
+      tryPlay();
+    };
+
+    const onStall = () => {
+      // Resume after a brief buffer stall (common on mobile)
+      window.setTimeout(tryPlay, 300);
+    };
+
+    document.addEventListener("visibilitychange", onVisibility);
+    el.addEventListener("ended", onEnded);
+    el.addEventListener("stalled", onStall);
+    el.addEventListener("waiting", onStall);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      el.removeEventListener("ended", onEnded);
+      el.removeEventListener("stalled", onStall);
+      el.removeEventListener("waiting", onStall);
+    };
+  }, [videoSrc, muted]);
 
   return (
     <section className="relative h-[min(100svh,900px)] w-full max-w-[100vw] overflow-hidden bg-background">
       <div className="absolute inset-0 overflow-hidden">
-        {!videoError && (
+        <Image
+          src="/videos/hero-poster.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+
+        {videoSrc && !videoError && (
           <video
+            ref={videoRef}
+            key={videoSrc}
+            src={videoSrc}
             autoPlay
             muted={muted}
             loop
             playsInline
-            className="h-full w-full object-cover"
+            preload="auto"
+            poster="/videos/hero-poster.jpg"
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              videoReady ? "opacity-100" : "opacity-0"
+            }`}
+            onLoadedData={() => setVideoReady(true)}
+            onPlaying={() => setVideoReady(true)}
             onError={() => setVideoError(true)}
-          >
-            <source src="/videos/hero.mp4" type="video/mp4" />
-          </video>
+          />
         )}
-        <div
-          className="absolute inset-0 bg-foreground/55"
-          aria-hidden
-        />
+
+        <div className="absolute inset-0 bg-foreground/55" aria-hidden />
         <div
           className="absolute inset-0 bg-gradient-to-b from-foreground/40 via-foreground/20 to-background/80"
           aria-hidden
@@ -81,7 +184,7 @@ export function HeroCinematic() {
         </motion.div>
       </div>
 
-      {!videoError && (
+      {videoSrc && !videoError && (
         <button
           type="button"
           onClick={() => setMuted((m) => !m)}

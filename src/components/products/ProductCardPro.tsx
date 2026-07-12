@@ -13,9 +13,10 @@ import { isPlaceholderImage } from "@/lib/utils/productImage";
 
 type ProductCardProProps = {
   product: Product;
+  priority?: boolean;
 };
 
-export function ProductCardPro({ product }: ProductCardProProps) {
+export function ProductCardPro({ product, priority = false }: ProductCardProProps) {
   const [imgFailed, setImgFailed] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
   const setCartOpen = useUIStore((s) => s.setCartOpen);
@@ -52,7 +53,9 @@ export function ProductCardPro({ product }: ProductCardProProps) {
             src={product.image}
             alt={alt}
             fill
+            priority={priority}
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+            quality={70}
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
             onError={() => setImgFailed(true)}
           />
