@@ -56,6 +56,20 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
   return mapRow(data as ProductRow);
 }
 
+export async function getProductsByIds(ids: string[]): Promise<Product[]> {
+  const unique = Array.from(new Set(ids.filter(Boolean)));
+  if (unique.length === 0) return [];
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .in("id", unique);
+
+  if (error || !data) return [];
+  return (data as ProductRow[]).map(mapRow);
+}
+
 export async function getProducts(filters?: {
   category?: string;
   filter?: string;

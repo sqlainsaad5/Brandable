@@ -1,6 +1,7 @@
 import type { Product } from "@/lib/data/products";
+import { getSiteUrl } from "@/lib/site";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://brandable.in";
+const siteUrl = getSiteUrl();
 
 /** Schema.org Product JSON-LD for rich results (currency: PKR). */
 export function ProductJsonLd({ product }: { product: Product }) {

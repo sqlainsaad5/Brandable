@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 
-/** Default Open Graph / Twitter share image (WhatsApp-friendly JPG). */
+/**
+ * WhatsApp / Facebook OG image.
+ * Query `v=` busts share-preview cache after image updates.
+ */
 export const OG_IMAGE = {
-  url: "/og-image.jpg",
+  url: "/og-image.jpg?v=3",
   width: 1200,
   height: 630,
   type: "image/jpeg" as const,

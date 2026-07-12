@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { getProductsByIds } from "@/lib/data/products";
 import { placeOrderPayloadSchema } from "@/lib/orders/schema";
 import { checkRateLimit } from "@/lib/security/rateLimit";
 import { ORDER_CONFIRM_COOKIE } from "@/lib/orders/constants";
@@ -68,14 +69,33 @@ export async function placeOrder(
     };
   }
 
-  const subtotal = parsed.data.items.reduce(
+  // Trust catalog prices from DB — never client-submitted amounts
+  const catalog = await getProductsByIds(
+    parsed.data.items.map((i) => i.product_id)
+  );
+  const byId = new Map(catalog.map((p) => [p.id, p]));
+
+  const secureItems: OrderItem[] = [];
+  for (const item of parsed.data.items) {
+    const product = byId.get(item.product_id);
+    if (!product || !Number.isFinite(product.price) || product.price < 0) {
+      return {
+        success: false,
+        error: "One or more products are unavailable. Please refresh your cart.",
+      };
+    }
+    secureItems.push({
+      ...item,
+      name: product.name,
+      price: product.price,
+      image: product.image || item.image,
+    });
+  }
+
+  const subtotal = secureItems.reduce(
     (sum, i) => sum + Number(i.price) * Number(i.quantity),
     0
   );
-
-  if (Math.abs(subtotal - parsed.data.subtotal) > 1) {
-    return { success: false, error: "Cart total mismatch. Please refresh." };
-  }
 
   const total = subtotal;
   const orderId = randomUUID();
@@ -89,7 +109,7 @@ export async function placeOrder(
     customer_address: parsed.data.customer_address,
     customer_city: parsed.data.customer_city,
     notes: parsed.data.notes || null,
-    items: parsed.data.items,
+    items: secureItems,
     subtotal,
     total,
     status: "pending",
