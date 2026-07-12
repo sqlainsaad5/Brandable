@@ -6,11 +6,11 @@ type ButtonSize = "default" | "small";
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-accent text-background hover:bg-accent-hover focus-visible:ring-accent",
+    "bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:ring-primary",
   secondary:
-    "border border-white/20 text-foreground hover:border-accent hover:text-accent focus-visible:ring-accent",
+    "border border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary",
   ghost:
-    "text-foreground hover:bg-white/5 hover:text-accent focus-visible:ring-accent",
+    "text-foreground hover:bg-foreground/5 hover:text-primary focus-visible:ring-primary",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

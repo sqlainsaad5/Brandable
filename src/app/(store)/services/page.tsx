@@ -7,7 +7,7 @@ import { SERVICES_LIST } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Brand strategy, visual identity, guidelines, and ongoing support. See how Brandable can help your brand.",
+    "Explore BRANDABLE services and support for your wardrobe — sizing help, styling guidance, and premium women's western wear shopping in Pakistan.",
 };
 
 export default function ServicesPage() {

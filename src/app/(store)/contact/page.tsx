@@ -2,11 +2,18 @@ import type { Metadata } from "next";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { CONTACT } from "@/lib/constants";
+import { defaultOgImages } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact Us",
   description:
-    "Get in touch with Brandable. Share your project or question—we'll respond within 24 hours.",
+    "Contact BRANDABLE for order help, sizing questions, or wholesale enquiries. Fast replies for our women's western wear store in Pakistan.",
+  openGraph: {
+    title: "Contact Us | BRANDABLE",
+    description:
+      "Get in touch with BRANDABLE for support, sizing help, or product questions about women's western wear.",
+    images: defaultOgImages,
+  },
 };
 
 export default function ContactPage() {

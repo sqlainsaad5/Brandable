@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { Card } from "@/components/ui/Card";
@@ -48,7 +49,7 @@ export function AboutContent() {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
               className="cursor-default"
             >
-              <Card className="h-full transition-shadow hover:shadow-lg hover:shadow-black/10 hover:border-accent/30">
+              <Card className="h-full transition-shadow hover:shadow-lg hover:shadow-black/10 hover:border-primary/30">
                 <h3 className="font-display text-lg font-semibold text-foreground">
                   {title}
                 </h3>
@@ -81,19 +82,21 @@ export function AboutContent() {
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
               className="group cursor-default"
             >
-              <Card className="overflow-hidden p-0 h-full transition-shadow hover:shadow-xl hover:shadow-black/15 hover:border-accent/30">
-                <div className="aspect-[3/4] w-full overflow-hidden rounded-t-lg bg-surface">
-                  <motion.img
+              <Card className="overflow-hidden p-0 h-full transition-shadow hover:shadow-xl hover:shadow-black/15 hover:border-primary/30">
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-t-lg bg-surface">
+                  <Image
                     src={owner.image}
-                    alt={owner.name}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    alt={`${owner.name}, ${owner.role} at BRANDABLE`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div className="p-6">
                   <h3 className="font-display text-xl font-semibold text-foreground">
                     {owner.name}
                   </h3>
-                  <p className="mt-1 text-sm text-accent">{owner.role}</p>
+                  <p className="mt-1 text-sm text-primary">{owner.role}</p>
                   <p className="mt-3 text-sm text-muted">{owner.bio}</p>
                 </div>
               </Card>

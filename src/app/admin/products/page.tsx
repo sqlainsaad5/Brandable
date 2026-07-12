@@ -1,8 +1,11 @@
-export default function AdminProducts() {
-  return (
-    <div>
-      <h1 className="font-display text-2xl font-bold text-foreground mb-6">Products</h1>
-      <p className="text-muted">Product management (CRUD) can be added here with Supabase.</p>
-    </div>
-  );
+import { getProducts } from "@/lib/data/products";
+import { requireAdmin } from "@/lib/auth/requireAdmin";
+import { AdminProductsClient } from "./AdminProductsClient";
+
+export const dynamic = "force-dynamic";
+
+export default async function AdminProductsPage() {
+  await requireAdmin();
+  const products = await getProducts();
+  return <AdminProductsClient products={products} />;
 }

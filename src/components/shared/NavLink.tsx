@@ -19,8 +19,8 @@ export function NavLink({ href, children, className, onClick }: NavLinkProps) {
     <Link
       href={href}
       className={cn(
-        "text-sm font-medium transition-colors hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded",
-        isActive ? "text-accent" : "text-muted hover:text-foreground",
+        "text-sm font-medium transition-colors hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded",
+        isActive ? "text-primary" : "text-muted hover:text-foreground",
         className
       )}
       onClick={onClick}

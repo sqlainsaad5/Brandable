@@ -46,7 +46,7 @@ export function ContactForm() {
   if (submitted) {
     return (
       <div
-        className="rounded-lg border border-white/10 bg-surface/50 p-6 text-center"
+        className="rounded-lg border border-border bg-surface/50 p-6 text-center"
         role="status"
         aria-live="polite"
       >

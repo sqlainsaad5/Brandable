@@ -24,7 +24,7 @@ export const Textarea = forwardRef<
         id={textareaId}
         className={cn(
           "w-full min-h-[120px] rounded-md border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted resize-y",
-          "border-white/20 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent",
+          "border-border focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary",
           "disabled:cursor-not-allowed disabled:opacity-50",
           error && "border-red-500/50 focus:border-red-500 focus:ring-red-500/50",
           className
@@ -36,7 +36,7 @@ export const Textarea = forwardRef<
       {error && (
         <p
           id={`${textareaId}-error`}
-          className="text-sm text-red-400"
+          className="text-sm text-red-600"
           role="alert"
         >
           {error}

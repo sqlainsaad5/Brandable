@@ -7,7 +7,7 @@ export function Footer() {
 
   return (
     <footer
-      className="border-t border-white/5 bg-surface"
+      className="border-t border-border bg-surface"
       role="contentinfo"
     >
       <div className="mx-auto max-w-6xl px-6 py-12">
@@ -27,7 +27,7 @@ export function Footer() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-sm text-muted hover:text-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded"
+                    className="text-sm text-muted hover:text-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded"
                   >
                     {label}
                   </Link>

@@ -24,7 +24,7 @@ export function WhatWeDo() {
           const Icon = iconMap[icon as keyof typeof iconMap] ?? Compass;
           return (
             <Card key={title}>
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <Icon size={20} aria-hidden />
               </div>
               <h3 className="mt-4 font-display text-lg font-semibold text-foreground">

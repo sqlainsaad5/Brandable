@@ -23,7 +23,7 @@ export function Testimonials() {
           </Card>
         ))}
       </div>
-      <div className="mt-16 border-t border-white/10 pt-12">
+      <div className="mt-16 border-t border-border pt-12">
         <p className="text-center text-sm text-muted">Trusted by</p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-8">
           {TRUSTED_BY.map((name) => (

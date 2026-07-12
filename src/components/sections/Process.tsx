@@ -15,7 +15,7 @@ export function Process() {
           <div key={step} className="relative">
             <div className="flex items-center gap-4">
               <span
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-semibold text-background"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground"
                 aria-hidden
               >
                 {step}

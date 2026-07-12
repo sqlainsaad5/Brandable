@@ -10,7 +10,7 @@ export default function StoreLayout({
   return (
     <>
       <HeaderPro />
-      <main id="main-content" className="flex-1" role="main">
+      <main id="main-content" className="min-w-0 flex-1 overflow-x-hidden" role="main">
         {children}
       </main>
       <FooterPro />

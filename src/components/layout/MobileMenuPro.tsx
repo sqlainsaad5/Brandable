@@ -1,14 +1,23 @@
 "use client";
 
+import { useEffect, useState, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { X, Search, ShoppingBag } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { X, ShoppingBag, Search } from "lucide-react";
 import { useCartStore } from "@/lib/store/cartStore";
 import { useUIStore } from "@/lib/store/uiStore";
 import { Logo } from "@/components/shared/Logo";
 import { cn } from "@/lib/utils/cn";
 
-const LINKS = [
+const PRIMARY_LINKS = [
+  { name: "Home", href: "/" },
+  { name: "Shop All", href: "/products" },
+  { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
+];
+
+const CATEGORY_LINKS = [
   { name: "New Arrivals", href: "/products?filter=new" },
   { name: "Dresses", href: "/products?category=dresses" },
   { name: "Tops", href: "/products?category=tops" },
@@ -18,16 +27,48 @@ const LINKS = [
 ];
 
 export function MobileMenuPro() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  const [query, setQuery] = useState("");
   const open = useUIStore((s) => s.mobileMenuOpen);
   const setOpen = useUIStore((s) => s.setMobileMenuOpen);
   const totalItems = useCartStore((s) => s.totalItems());
   const setCartOpen = useUIStore((s) => s.setCartOpen);
+
+  useEffect(() => setMounted(true), []);
+
+  // Lock body scroll while menu is open
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  const cartCount = mounted ? totalItems : 0;
 
   const close = () => setOpen(false);
   const openCart = () => {
     setOpen(false);
     setCartOpen(true);
   };
+
+  function handleSearch(e: FormEvent) {
+    e.preventDefault();
+    const q = query.trim();
+    close();
+    router.push(q ? `/products?q=${encodeURIComponent(q)}` : "/products");
+    setQuery("");
+  }
+
+  function isActive(href: string) {
+    const path = href.split("?")[0];
+    if (path === "/") return pathname === "/";
+    return pathname === path || pathname.startsWith(`${path}/`);
+  }
 
   return (
     <AnimatePresence>
@@ -45,53 +86,89 @@ export function MobileMenuPro() {
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-background border-l border-white/10 shadow-hard md:hidden flex flex-col"
+            transition={{ type: "spring", damping: 28, stiffness: 260 }}
+            className="fixed inset-y-0 right-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-border bg-background shadow-hard md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile menu"
           >
-            <div className="flex items-center justify-between p-6 border-b border-white/10">
+            <div className="flex items-center justify-between border-b border-border px-4 py-3">
               <Logo variant="mobile" />
               <button
                 type="button"
                 onClick={close}
-                className="p-2 text-foreground hover:text-accent"
+                className="inline-flex h-11 w-11 items-center justify-center text-foreground hover:text-primary"
                 aria-label="Close menu"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <nav className="flex-1 overflow-auto p-6">
-              <ul className="space-y-1">
-                {LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      onClick={close}
-                      className={cn(
-                        "block py-3 text-lg font-medium text-foreground hover:text-accent transition-colors"
-                      )}
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <div className="p-6 border-t border-white/10 flex gap-3">
-              <button
-                type="button"
-                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg border border-white/20 text-foreground"
-                aria-label="Search"
-              >
-                <Search className="h-5 w-5" />
-                Search
-              </button>
+
+            <div className="flex-1 overflow-auto px-4 py-4">
+              <form onSubmit={handleSearch} className="mb-6" role="search">
+                <label htmlFor="mobile-search" className="sr-only">
+                  Search products
+                </label>
+                <div className="flex items-center gap-2 rounded-md border border-border bg-surface px-3">
+                  <Search className="h-4 w-4 shrink-0 text-muted" aria-hidden />
+                  <input
+                    id="mobile-search"
+                    type="search"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search products…"
+                    className="h-11 w-full bg-transparent text-base text-foreground outline-none placeholder:text-muted"
+                  />
+                </div>
+              </form>
+
+              <nav aria-label="Primary">
+                <ul className="space-y-0.5">
+                  {PRIMARY_LINKS.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={close}
+                        className={cn(
+                          "flex min-h-11 items-center text-lg font-medium transition-colors hover:text-primary",
+                          isActive(link.href) ? "text-primary" : "text-foreground"
+                        )}
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+
+              <p className="mb-2 mt-8 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
+                Shop by category
+              </p>
+              <nav aria-label="Categories">
+                <ul className="space-y-0.5">
+                  {CATEGORY_LINKS.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={close}
+                        className="flex min-h-11 items-center text-base font-medium text-foreground transition-colors hover:text-primary"
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
+
+            <div className="border-t border-border p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
               <button
                 type="button"
                 onClick={openCart}
-                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-accent text-background font-medium"
+                className="flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 font-medium text-primary-foreground"
               >
                 <ShoppingBag className="h-5 w-5" />
-                Cart {totalItems > 0 ? `(${totalItems})` : ""}
+                Cart{cartCount > 0 ? ` (${cartCount})` : ""}
               </button>
             </div>
           </motion.aside>

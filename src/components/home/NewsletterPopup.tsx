@@ -49,7 +49,7 @@ export function NewsletterPopup() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: "spring", damping: 25 }}
-            className="fixed left-1/2 top-1/2 z-[101] w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/10 bg-background p-8 shadow-hard"
+            className="fixed left-1/2 top-1/2 z-[101] w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-border bg-background p-8 shadow-hard"
           >
             <button
               type="button"
@@ -71,12 +71,12 @@ export function NewsletterPopup() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full rounded-lg border border-white/20 bg-surface px-4 py-3 text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                className="w-full rounded-lg border border-border bg-surface px-4 py-3 text-foreground placeholder:text-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 required
               />
               <button
                 type="submit"
-                className="mt-3 w-full rounded-lg bg-accent py-3 font-semibold text-background hover:bg-accent-hover transition-colors"
+                className="mt-3 w-full rounded-lg bg-primary py-3 font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
               >
                 Subscribe
               </button>
